@@ -1,4 +1,5 @@
-﻿using Hospital.Repositories;
+﻿using Hospital.Models;
+using Hospital.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,7 +44,16 @@ namespace hospitals.Utilities
 				_roleManager.CreateAsync(new IdentityRole(WebSiteRoles.WebSite_Patient)).GetAwaiter().GetResult();
 				_roleManager.CreateAsync(new IdentityRole(WebSiteRoles.WebSite_Doctor)).GetAwaiter().GetResult();
 
-				_userManager.CreateAsync()
+				_userManager.CreateAsync(new ApplicationUser 
+				{
+					UserName="Harkes",
+					Email="harkesh@xyz.com"
+				},"Harkesh@123").GetAwaiter().GetResult();
+				var Appuser= _context.ApplicationUsers.FirstOrDefault(x=>x.Email=="harkesh<xyz.com");
+				if (Appuser!=null) 
+				{
+					_userManager.AddToRoleAsync(Appuser, WebSiteRoles.WebSite_Admin).GetAwaiter().GetResult();
+				}
 			}
 		}
 	}
